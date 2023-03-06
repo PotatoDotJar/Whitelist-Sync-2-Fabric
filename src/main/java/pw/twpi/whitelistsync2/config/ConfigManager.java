@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().setLenient().create();
-
     private static ConfigData CONFIG;
     private static boolean ENABLED = false;
 
@@ -19,22 +18,17 @@ public class ConfigManager {
         return CONFIG;
     }
 
-    public static boolean isEnabled() {
-        return ENABLED;
-    }
-
     public static boolean loadConfig() {
         ENABLED = false;
 
         CONFIG = null;
         try {
-            Path configPath = FabricLoader.getInstance().getConfigDir().resolve("whitelistsync2");
-            File configFile = Paths.get(configPath., "whitelistsync2.json");
+            File configFolder = FabricLoader.getInstance().getConfigDir().resolve("whitelistsync2").toFile();
+            File configFile = new File(configFolder, "whitelistsync2.json");
 
-            ConfigData config;
+            ConfigData config = null;
 
-            if (!configFile.exists()) {
-                WhitelistSync2.LOGGER.info("Creating new whitelist sync file");
+            if (configFolder.mkdir() || !configFile.exists()) {
                 config = CreateNewConfig(configFile);
             } else {
                 config = GSON.fromJson(new InputStreamReader(new FileInputStream(configFile), "UTF-8"), ConfigData.class);
@@ -52,8 +46,7 @@ public class ConfigManager {
     }
 
     private static ConfigData CreateNewConfig(File configFile) throws IOException {
-        configFile.mkdir();
-
+        WhitelistSync2.LOGGER.info("Creating new whitelist sync file");
         ConfigData newConfig = new ConfigData();
 
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), "UTF-8"));

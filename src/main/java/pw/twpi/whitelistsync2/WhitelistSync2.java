@@ -12,8 +12,6 @@ import pw.twpi.whitelistsync2.config.ConfigData;
 import pw.twpi.whitelistsync2.config.ConfigManager;
 import pw.twpi.whitelistsync2.services.WhitelistSyncThread;
 
-import static pw.twpi.whitelistsync2.config.DatabaseMode.SQLITE;
-
 public class WhitelistSync2 implements ModInitializer {
 	public static final String MODID = "whitelistsync2";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
